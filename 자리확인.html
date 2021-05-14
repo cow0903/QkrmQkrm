@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>자리 확인 시스템</title>
+        <meta charset="utf-8">
+        <style>
+            .button {
+              background-color: #4caf50;
+              border: none;
+              color: white;
+              padding: 50px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+              margin: 4px 2px;
+              cursor: pointer;
+            }
+            .button1 {border-radius: 50px;}
+            .button-on {border-radius: 100%; background-color: #4caf50;}
+            .button-off {border-radius: 100%; background-color: #707070;}
+            </style>
+    </head>
+    <body>
+        <h3>자리 확인 시스템</h3> </br>
+        <hr>
+        자리에 있을 시 녹색 없을 시 회색
+        <p id="demo"></p>
+        <button class="button button1"></button>
+        <pre id="object"></pre>
+
+        <script>
+             var firebaseConfig = {
+                apiKey: "AIzaSyChJj52QdtVxlu5PVMOHAVV0ijiqlvrwmc",
+                authDomain: "web-server-68ff7.firebaseapp.com",
+                projectId: "web-server-68ff7",
+                storageBucket: "web-server-68ff7.appspot.com",
+                messagingSenderId: "346097532125",
+                appId: "1:346097532125:web:376e057cf91eeadc50ef34",
+                measurementId: "G-WBFJZPSYVT"
+            };
+            firebase.initializeApp(firebaseConfig);
+        </script>
+
+         <script>
+            var preObject = document.getElementById("object");
+            var dbRef = firebase.database().ref().child("object");
+            var power;
+            dbRef.on('value',snap => {
+                power=snap.val();
+                preObject.innerText=JSON.stringify(power);
+
+                var demo = document.getElementById("demo");
+                if(power.on == 1)
+                    demo.innerHTML="<button id=\"button01\" class=\"button button-on\" onclick=\"myFunction()\">";
+                else
+                    demo.innerHTML="<button id=\"button01\" class=\"button button-off\" onclick=\"myFunction()\">";
+            });
+
+            function myFunction() {
+                var button01 = document.getElementById("button01");
+                if(power.on==1)
+                    power.on=0;
+                else
+                    power.on=1;
+                var dbRefObject = firebase.database().ref();
+                dbRefObject.child("object/on").set(power.on);
+            }
+        </script>
+    </body>
+</html>
